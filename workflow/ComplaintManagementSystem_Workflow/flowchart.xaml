@@ -1,0 +1,615 @@
+﻿<Activity mc:Ignorable="sap sap2010 sads" x:Class="ComplaintManagementSystem_Workflow.flowchart"
+ xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
+ xmlns:av="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+ xmlns:local="clr-namespace:ComplaintManagementSystem_Workflow"
+ xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+ xmlns:mca="clr-namespace:Microsoft.CSharp.Activities;assembly=System.Activities"
+ xmlns:sads="http://schemas.microsoft.com/netfx/2010/xaml/activities/debugger"
+ xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation"
+ xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation"
+ xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib"
+ xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=mscorlib"
+ xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <x:Members>
+    <x:Property Name="Result" Type="InArgument(x:String)" />
+    <x:Property Name="CorrDoc" Type="InArgument(x:String)" />
+    <x:Property Name="rejectionComments" Type="InArgument(x:String)" />
+    <x:Property Name="CommentAll" Type="OutArgument(x:String)" />
+  </x:Members>
+  <sap2010:ExpressionActivityEditor.ExpressionActivityEditor>C#</sap2010:ExpressionActivityEditor.ExpressionActivityEditor>
+  <sap2010:WorkflowViewState.IdRef>ComplaintManagementSystem_Workflow.flowchart_1</sap2010:WorkflowViewState.IdRef>
+  <TextExpression.NamespacesForImplementation>
+    <sco:Collection x:TypeArguments="x:String">
+      <x:String>System</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>System.Data</x:String>
+      <x:String>System.Linq</x:String>
+      <x:String>System.Text</x:String>
+    </sco:Collection>
+  </TextExpression.NamespacesForImplementation>
+  <TextExpression.ReferencesForImplementation>
+    <sco:Collection x:TypeArguments="AssemblyReference">
+      <AssemblyReference>Microsoft.CSharp</AssemblyReference>
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>System.Data</AssemblyReference>
+      <AssemblyReference>System.Runtime.Serialization</AssemblyReference>
+      <AssemblyReference>System.ServiceModel</AssemblyReference>
+      <AssemblyReference>System.ServiceModel.Activities</AssemblyReference>
+      <AssemblyReference>System.Xaml</AssemblyReference>
+      <AssemblyReference>System.Xml</AssemblyReference>
+      <AssemblyReference>System.Xml.Linq</AssemblyReference>
+      <AssemblyReference>mscorlib</AssemblyReference>
+      <AssemblyReference>ComplaintManagementSystem_Workflow</AssemblyReference>
+    </sco:Collection>
+  </TextExpression.ReferencesForImplementation>
+  <StateMachine sap2010:WorkflowViewState.IdRef="StateMachine_5">
+    <StateMachine.InitialState>
+      <State x:Name="__ReferenceID0" DisplayName="PromptMaker" sap2010:WorkflowViewState.IdRef="State_1">
+        <State.Entry>
+          <Sequence sap2010:WorkflowViewState.IdRef="Sequence_3">
+            <local:PromptAtMaker sap2010:WorkflowViewState.IdRef="PromptAtMaker_1" RequiredDocument="ProvidedDoc" Text="Please upload document">
+              <local:PromptAtMaker.Result>
+                <OutArgument x:TypeArguments="x:String">
+                  <mca:CSharpReference x:TypeArguments="x:String">ProvidedDocument</mca:CSharpReference>
+                </OutArgument>
+              </local:PromptAtMaker.Result>
+              <local:PromptAtMaker.rejectionComments>
+                <InArgument x:TypeArguments="x:String">
+                  <mca:CSharpValue x:TypeArguments="x:String">CommentAll</mca:CSharpValue>
+                </InArgument>
+              </local:PromptAtMaker.rejectionComments>
+            </local:PromptAtMaker>
+            <Assign sap2010:WorkflowViewState.IdRef="Assign_2">
+              <Assign.To>
+                <OutArgument x:TypeArguments="x:String">
+                  <mca:CSharpReference x:TypeArguments="x:String">CommentAll</mca:CSharpReference>
+                </OutArgument>
+              </Assign.To>
+              <Assign.Value>
+                <InArgument x:TypeArguments="x:String">
+                  <mca:CSharpValue x:TypeArguments="x:String">null</mca:CSharpValue>
+                </InArgument>
+              </Assign.Value>
+            </Assign>
+            <If sap2010:WorkflowViewState.IdRef="If_2">
+              <If.Condition>
+                <InArgument x:TypeArguments="x:Boolean">
+                  <mca:CSharpValue x:TypeArguments="x:Boolean">!String.IsNullOrEmpty(CommentAll)</mca:CSharpValue>
+                </InArgument>
+              </If.Condition>
+              <If.Then>
+                <WriteLine sap2010:WorkflowViewState.IdRef="WriteLine_2">
+                  <InArgument x:TypeArguments="x:String">
+                    <mca:CSharpValue x:TypeArguments="x:String">"Rejection Reason:" + CommentAll</mca:CSharpValue>
+                  </InArgument>
+                </WriteLine>
+              </If.Then>
+            </If>
+          </Sequence>
+        </State.Entry>
+        <State.Transitions>
+          <Transition DisplayName="Send Documents to Checker" sap2010:WorkflowViewState.IdRef="Transition_15" Condition="True">
+            <Transition.To>
+              <State x:Name="__ReferenceID1" DisplayName="Checker" sap2010:WorkflowViewState.IdRef="State_5">
+                <State.Entry>
+                  <Sequence sap2010:WorkflowViewState.IdRef="Sequence_4">
+                    <local:ApproveAtChecker sap2010:WorkflowViewState.IdRef="ApproveAtChecker_1">
+                      <local:ApproveAtChecker.ProvidedDocument>
+                        <InArgument x:TypeArguments="x:String">
+                          <mca:CSharpValue x:TypeArguments="x:String">ProvidedDocument</mca:CSharpValue>
+                        </InArgument>
+                      </local:ApproveAtChecker.ProvidedDocument>
+                      <local:ApproveAtChecker.isApprovedAtChecker>
+                        <OutArgument x:TypeArguments="x:Boolean">
+                          <mca:CSharpReference x:TypeArguments="x:Boolean">isApprovedAtChecker</mca:CSharpReference>
+                        </OutArgument>
+                      </local:ApproveAtChecker.isApprovedAtChecker>
+                      <local:ApproveAtChecker.rejectionComments>
+                        <OutArgument x:TypeArguments="x:String">
+                          <mca:CSharpReference x:TypeArguments="x:String">CommentAll</mca:CSharpReference>
+                        </OutArgument>
+                      </local:ApproveAtChecker.rejectionComments>
+                    </local:ApproveAtChecker>
+                    <If sap2010:WorkflowViewState.IdRef="If_1">
+                      <If.Condition>
+                        <InArgument x:TypeArguments="x:Boolean">
+                          <mca:CSharpValue x:TypeArguments="x:Boolean">!String.IsNullOrEmpty(CommentAll)</mca:CSharpValue>
+                        </InArgument>
+                      </If.Condition>
+                      <If.Then>
+                        <WriteLine sap2010:WorkflowViewState.IdRef="WriteLine_1">
+                          <InArgument x:TypeArguments="x:String">
+                            <mca:CSharpValue x:TypeArguments="x:String">"Rejection Reason:" + CommentAll</mca:CSharpValue>
+                          </InArgument>
+                        </WriteLine>
+                      </If.Then>
+                    </If>
+                  </Sequence>
+                </State.Entry>
+                <State.Transitions>
+                  <Transition DisplayName="Documents Rejected" sap2010:WorkflowViewState.IdRef="Transition_6" To="{x:Reference __ReferenceID0}">
+                    <Transition.Condition>
+                      <mca:CSharpValue x:TypeArguments="x:Boolean">!isApprovedAtChecker</mca:CSharpValue>
+                    </Transition.Condition>
+                  </Transition>
+                  <Transition DisplayName="Approved Documents from checker" sap2010:WorkflowViewState.IdRef="Transition_14">
+                    <Transition.Condition>
+                      <mca:CSharpValue x:TypeArguments="x:Boolean">isApprovedAtChecker</mca:CSharpValue>
+                    </Transition.Condition>
+                    <Transition.To>
+                      <State x:Name="__ReferenceID2" DisplayName="MakerCentral" sap2010:WorkflowViewState.IdRef="State_2">
+                        <State.Entry>
+                          <Sequence sap2010:WorkflowViewState.IdRef="Sequence_5">
+                            <local:ApproveAtMakerCentral sap2010:WorkflowViewState.IdRef="ApproveAtMakerCentral_1">
+                              <local:ApproveAtMakerCentral.ProvidedDocument>
+                                <InArgument x:TypeArguments="x:String">
+                                  <mca:CSharpValue x:TypeArguments="x:String">ProvidedDocument</mca:CSharpValue>
+                                </InArgument>
+                              </local:ApproveAtMakerCentral.ProvidedDocument>
+                              <local:ApproveAtMakerCentral.isApproveAtMakerCentral>
+                                <OutArgument x:TypeArguments="x:Boolean">
+                                  <mca:CSharpReference x:TypeArguments="x:Boolean">isApprovedAtMakerCentral</mca:CSharpReference>
+                                </OutArgument>
+                              </local:ApproveAtMakerCentral.isApproveAtMakerCentral>
+                              <local:ApproveAtMakerCentral.rejectionComments>
+                                <OutArgument x:TypeArguments="x:String">
+                                  <mca:CSharpReference x:TypeArguments="x:String">CommentAll</mca:CSharpReference>
+                                </OutArgument>
+                              </local:ApproveAtMakerCentral.rejectionComments>
+                              <local:ApproveAtMakerCentral.sendBackToMaker>
+                                <OutArgument x:TypeArguments="x:Boolean">
+                                  <mca:CSharpReference x:TypeArguments="x:Boolean">sendBackToMaker</mca:CSharpReference>
+                                </OutArgument>
+                              </local:ApproveAtMakerCentral.sendBackToMaker>
+                            </local:ApproveAtMakerCentral>
+                            <If sap2010:WorkflowViewState.IdRef="If_3">
+                              <If.Condition>
+                                <InArgument x:TypeArguments="x:Boolean">
+                                  <mca:CSharpValue x:TypeArguments="x:Boolean">!string.IsNullOrEmpty(CommentAll)</mca:CSharpValue>
+                                </InArgument>
+                              </If.Condition>
+                              <If.Then>
+                                <WriteLine sap2010:WorkflowViewState.IdRef="WriteLine_3">
+                                  <InArgument x:TypeArguments="x:String">
+                                    <mca:CSharpValue x:TypeArguments="x:String">"Rejection Reason:"+ CommentAll</mca:CSharpValue>
+                                  </InArgument>
+                                </WriteLine>
+                              </If.Then>
+                            </If>
+                          </Sequence>
+                        </State.Entry>
+                        <State.Transitions>
+                          <Transition DisplayName="Reject Documents and send back to checker" sap2010:WorkflowViewState.IdRef="Transition_7" To="{x:Reference __ReferenceID1}">
+                            <Transition.Condition>
+                              <mca:CSharpValue x:TypeArguments="x:Boolean">!isApprovedAtMakerCentral &amp;&amp; !sendBackToMaker</mca:CSharpValue>
+                            </Transition.Condition>
+                          </Transition>
+                          <Transition DisplayName="Approved Documents from Maker Central" sap2010:WorkflowViewState.IdRef="Transition_13">
+                            <Transition.Condition>
+                              <mca:CSharpValue x:TypeArguments="x:Boolean">isApprovedAtMakerCentral &amp;&amp; !sendBackToMaker</mca:CSharpValue>
+                            </Transition.Condition>
+                            <Transition.To>
+                              <State x:Name="__ReferenceID3" DisplayName="CheckerCentral" sap2010:WorkflowViewState.IdRef="State_3">
+                                <State.Entry>
+                                  <Sequence sap2010:WorkflowViewState.IdRef="Sequence_6">
+                                    <local:ApproveAtCheckerCentral sap2010:WorkflowViewState.IdRef="ApproveAtCheckerCentral_1">
+                                      <local:ApproveAtCheckerCentral.ProvidedDocument>
+                                        <InArgument x:TypeArguments="x:String">
+                                          <mca:CSharpValue x:TypeArguments="x:String">ProvidedDocument</mca:CSharpValue>
+                                        </InArgument>
+                                      </local:ApproveAtCheckerCentral.ProvidedDocument>
+                                      <local:ApproveAtCheckerCentral.isApprovedAtCheckerCentral>
+                                        <OutArgument x:TypeArguments="x:Boolean">
+                                          <mca:CSharpReference x:TypeArguments="x:Boolean">isApprovedAtCheckerCentral</mca:CSharpReference>
+                                        </OutArgument>
+                                      </local:ApproveAtCheckerCentral.isApprovedAtCheckerCentral>
+                                      <local:ApproveAtCheckerCentral.rejectionComments>
+                                        <OutArgument x:TypeArguments="x:String">
+                                          <mca:CSharpReference x:TypeArguments="x:String">CommentAll</mca:CSharpReference>
+                                        </OutArgument>
+                                      </local:ApproveAtCheckerCentral.rejectionComments>
+                                      <local:ApproveAtCheckerCentral.sendBackToChecker>
+                                        <OutArgument x:TypeArguments="x:Boolean">
+                                          <mca:CSharpReference x:TypeArguments="x:Boolean">sendBackToChecker</mca:CSharpReference>
+                                        </OutArgument>
+                                      </local:ApproveAtCheckerCentral.sendBackToChecker>
+                                    </local:ApproveAtCheckerCentral>
+                                    <If sap2010:WorkflowViewState.IdRef="If_4">
+                                      <If.Condition>
+                                        <InArgument x:TypeArguments="x:Boolean">
+                                          <mca:CSharpValue x:TypeArguments="x:Boolean">!String.IsNullOrEmpty(CommentAll)</mca:CSharpValue>
+                                        </InArgument>
+                                      </If.Condition>
+                                      <If.Then>
+                                        <WriteLine sap2010:WorkflowViewState.IdRef="WriteLine_4">
+                                          <InArgument x:TypeArguments="x:String">
+                                            <mca:CSharpValue x:TypeArguments="x:String">"Rejection Reason" + CommentAll</mca:CSharpValue>
+                                          </InArgument>
+                                        </WriteLine>
+                                      </If.Then>
+                                    </If>
+                                  </Sequence>
+                                </State.Entry>
+                                <State.Transitions>
+                                  <Transition DisplayName="Reject Document and send back to maker central" sap2010:WorkflowViewState.IdRef="Transition_8" To="{x:Reference __ReferenceID2}">
+                                    <Transition.Condition>
+                                      <mca:CSharpValue x:TypeArguments="x:Boolean">!isApprovedAtCheckerCentral &amp;&amp; !sendBackToChecker</mca:CSharpValue>
+                                    </Transition.Condition>
+                                  </Transition>
+                                  <Transition DisplayName="Reject Documents and send back to Checker" sap2010:WorkflowViewState.IdRef="Transition_9" To="{x:Reference __ReferenceID1}">
+                                    <Transition.Condition>
+                                      <mca:CSharpValue x:TypeArguments="x:Boolean">!isApprovedAtCheckerCentral &amp;&amp; sendBackToChecker</mca:CSharpValue>
+                                    </Transition.Condition>
+                                  </Transition>
+                                  <Transition DisplayName="Approved Documents from 2nd level QC " sap2010:WorkflowViewState.IdRef="Transition_12">
+                                    <Transition.Condition>
+                                      <mca:CSharpValue x:TypeArguments="x:Boolean">isApprovedAtCheckerCentral &amp;&amp; !sendBackToChecker</mca:CSharpValue>
+                                    </Transition.Condition>
+                                    <Transition.To>
+                                      <State x:Name="__ReferenceID4" DisplayName="SecondLevelQC" sap2010:WorkflowViewState.IdRef="State_4">
+                                        <State.Entry>
+                                          <Sequence sap2010:WorkflowViewState.IdRef="Sequence_7">
+                                            <local:ApproveAtSecondLevelQC sap2010:WorkflowViewState.IdRef="ApproveAtSecondLevelQC_1">
+                                              <local:ApproveAtSecondLevelQC.ProvidedDocument>
+                                                <InArgument x:TypeArguments="x:String">
+                                                  <mca:CSharpValue x:TypeArguments="x:String">ProvidedDocument</mca:CSharpValue>
+                                                </InArgument>
+                                              </local:ApproveAtSecondLevelQC.ProvidedDocument>
+                                              <local:ApproveAtSecondLevelQC.isFinallyApproved>
+                                                <OutArgument x:TypeArguments="x:Boolean">
+                                                  <mca:CSharpReference x:TypeArguments="x:Boolean">isFinallyApproved</mca:CSharpReference>
+                                                </OutArgument>
+                                              </local:ApproveAtSecondLevelQC.isFinallyApproved>
+                                              <local:ApproveAtSecondLevelQC.rejectionComments>
+                                                <OutArgument x:TypeArguments="x:String">
+                                                  <mca:CSharpReference x:TypeArguments="x:String">CommentAll</mca:CSharpReference>
+                                                </OutArgument>
+                                              </local:ApproveAtSecondLevelQC.rejectionComments>
+                                              <local:ApproveAtSecondLevelQC.sendBackToChecker>
+                                                <OutArgument x:TypeArguments="x:Boolean">
+                                                  <mca:CSharpReference x:TypeArguments="x:Boolean">sendBackToChecker</mca:CSharpReference>
+                                                </OutArgument>
+                                              </local:ApproveAtSecondLevelQC.sendBackToChecker>
+                                              <local:ApproveAtSecondLevelQC.sendBackToMaker>
+                                                <OutArgument x:TypeArguments="x:Boolean">
+                                                  <mca:CSharpReference x:TypeArguments="x:Boolean">sendBackToMaker</mca:CSharpReference>
+                                                </OutArgument>
+                                              </local:ApproveAtSecondLevelQC.sendBackToMaker>
+                                            </local:ApproveAtSecondLevelQC>
+                                            <If sap2010:WorkflowViewState.IdRef="If_5">
+                                              <If.Condition>
+                                                <InArgument x:TypeArguments="x:Boolean">
+                                                  <mca:CSharpValue x:TypeArguments="x:Boolean">!String.IsNullOrEmpty(CommentAll)</mca:CSharpValue>
+                                                </InArgument>
+                                              </If.Condition>
+                                              <If.Then>
+                                                <WriteLine sap2010:WorkflowViewState.IdRef="WriteLine_5">
+                                                  <InArgument x:TypeArguments="x:String">
+                                                    <mca:CSharpValue x:TypeArguments="x:String">"Rejection Reason:" + CommentAll</mca:CSharpValue>
+                                                  </InArgument>
+                                                </WriteLine>
+                                              </If.Then>
+                                            </If>
+                                          </Sequence>
+                                        </State.Entry>
+                                        <State.Transitions>
+                                          <Transition DisplayName="Reject Document and send back to Checker Central" sap2010:WorkflowViewState.IdRef="Transition_10" To="{x:Reference __ReferenceID3}">
+                                            <Transition.Condition>
+                                              <mca:CSharpValue x:TypeArguments="x:Boolean">!isFinallyApproved &amp;&amp; !sendBackToMaker &amp;&amp; !sendBackToChecker</mca:CSharpValue>
+                                            </Transition.Condition>
+                                          </Transition>
+                                          <Transition DisplayName="Reject Document and send back to Checker" sap2010:WorkflowViewState.IdRef="Transition_11" To="{x:Reference __ReferenceID1}">
+                                            <Transition.Condition>
+                                              <mca:CSharpValue x:TypeArguments="x:Boolean">!isFinallyApproved &amp;&amp; !sendBackToMaker &amp;&amp; sendBackToChecker</mca:CSharpValue>
+                                            </Transition.Condition>
+                                          </Transition>
+                                          <Transition DisplayName="Application Approved Successfully" sap2010:WorkflowViewState.IdRef="Transition_16">
+                                            <Transition.Condition>
+                                              <mca:CSharpValue x:TypeArguments="x:Boolean">isFinallyApproved &amp;&amp; !sendBackToMaker &amp;&amp; !sendBackToChecker</mca:CSharpValue>
+                                            </Transition.Condition>
+                                            <Transition.To>
+                                              <State x:Name="__ReferenceID5" DisplayName="FinalState" sap2010:WorkflowViewState.IdRef="State_6" IsFinal="True" />
+                                            </Transition.To>
+                                          </Transition>
+                                          <Transition DisplayName="Send back to maker" sap2010:WorkflowViewState.IdRef="Transition_18" To="{x:Reference __ReferenceID0}">
+                                            <Transition.Condition>
+                                              <mca:CSharpValue x:TypeArguments="x:Boolean">!isFinallyApproved &amp;&amp; sendBackToMaker &amp;&amp; !sendBackToChecker</mca:CSharpValue>
+                                            </Transition.Condition>
+                                          </Transition>
+                                        </State.Transitions>
+                                        <State.Variables>
+                                          <Variable x:TypeArguments="x:Boolean" Name="sendBackToMaker" />
+                                          <Variable x:TypeArguments="x:Boolean" Name="sendBackToChecker" />
+                                        </State.Variables>
+                                      </State>
+                                    </Transition.To>
+                                  </Transition>
+                                </State.Transitions>
+                                <State.Variables>
+                                  <Variable x:TypeArguments="x:Boolean" Name="sendBackToChecker" />
+                                </State.Variables>
+                              </State>
+                            </Transition.To>
+                          </Transition>
+                          <Transition DisplayName="Reject Document and send back to Maker  - branch" sap2010:WorkflowViewState.IdRef="Transition_17" To="{x:Reference __ReferenceID0}">
+                            <Transition.Condition>
+                              <mca:CSharpValue x:TypeArguments="x:Boolean">!isApprovedAtMakerCentral &amp;&amp; sendBackToMaker</mca:CSharpValue>
+                            </Transition.Condition>
+                          </Transition>
+                        </State.Transitions>
+                        <State.Variables>
+                          <Variable x:TypeArguments="x:Boolean" Name="sendBackToMaker" />
+                        </State.Variables>
+                      </State>
+                    </Transition.To>
+                  </Transition>
+                </State.Transitions>
+              </State>
+            </Transition.To>
+          </Transition>
+        </State.Transitions>
+      </State>
+    </StateMachine.InitialState>
+    <x:Reference>__ReferenceID0</x:Reference>
+    <x:Reference>__ReferenceID2</x:Reference>
+    <x:Reference>__ReferenceID3</x:Reference>
+    <x:Reference>__ReferenceID4</x:Reference>
+    <x:Reference>__ReferenceID1</x:Reference>
+    <x:Reference>__ReferenceID5</x:Reference>
+    <StateMachine.Variables>
+      <Variable x:TypeArguments="x:String" Name="ProvidedDocument" />
+      <Variable x:TypeArguments="x:String" Name="CorrectDocument" />
+      <Variable x:TypeArguments="x:Boolean" Name="isApprovedAtChecker" />
+      <Variable x:TypeArguments="x:Boolean" Name="isApprovedAtMakerCentral" />
+      <Variable x:TypeArguments="x:Boolean" Name="isFinallyApproved" />
+      <Variable x:TypeArguments="x:Boolean" Name="isApprovedAtCheckerCentral" />
+    </StateMachine.Variables>
+    <sads:DebugSymbol.Symbol>d19DOlxVc2Vyc1xub3VtYW4uYWxpXERlc2t0b3BcV29ya2Zsb3dcd29ya2Zsb3dcQ29tcGxhaW50TWFuYWdlbWVudFN5c3RlbV9Xb3JrZmxvd1xmbG93Y2hhcnQueGFtbEkvA/ICEgIBATEH4QIPAwHUA44BF9kCHwMB4QLCAR/NAicDAe4B+wEnxgIvAgFYXw/dAhcCAQS5Ai+5AqIBAgECMwtaFgMB2ANdeV1/AwHWA5ABG7UBJgMBiAO6AR+6AZMBAwH7Ar8BH78BkgEDAe8C0gIf0gKSAQMB4wLEASPpAS4DAZUC7gEn7gGfAQMBiALzASfzAZ4BAwH8AfgBJ/gBngEDAfAB/QErpwI2AwGPAawCL6wCugEDAYEBsQIvsQK5AQIBdLYCL7YCuQECAWe+Ai++ArkBAgFaYROBAR4CAR2GAReGAWoCARGLAReLAWkCAQY0DT8jAwGIBEANSxYDAfEDTA1ZEgMB2QORAR2mATsDAaMDpwEdtAEiAwGJA8UBJdoBRQMBsALbASXoASoDAZYC/gEtmAJMAwGsAZkCLaYCMgMBkAFiFXIuAgE2cxWAARoCAR40eDSQAQMBoAQ0ZTRyAwGfBDcTN2kDAZQEPBM8WwMBiQRIE0hVAwH9A0MTQ2MDAfIDTxNPcwMB2gNTEVcdAwHlA5kBI5kBggEDAcgDlAEjlAFxAwG8A6MBI6MBeQMBsAOeASOeAXMDAaQDqgEjqgGDAQMBigOuASGyAS0DAZYDzQErzQGMAQMB1QLIASvIAXkDAckC1wEr1wGDAQMBvQLSASvSAXsDAbEC3gEr3gGLAQMBlwLiASnmATUDAaMChgIzhgKLAQMB4QGBAjOBAoEBAwHUAZACM5ACiwEDAccBlQIzlQKJAQMBugGLAjOLAoMBAwGtAZwCM5wCkwEDAZEBoAIxpAI9AwGeAWobanUCAU1lG2VpAgFCbxtvawIBN3YbdnsCAR96GX4lAgEqVRVVcwMB5gOwASWwAYIBAwGXA+QBLeQBigEDAaQCogI1ogKTAQMBnwF8HXx7AgEr</sads:DebugSymbol.Symbol>
+  </StateMachine>
+  <sap2010:WorkflowViewState.ViewStateManager>
+    <sap2010:ViewStateManager>
+      <sap2010:ViewStateData Id="PromptAtMaker_1" sap:VirtualizedContainerService.HintSize="464,22" />
+      <sap2010:ViewStateData Id="Assign_2" sap:VirtualizedContainerService.HintSize="464,62" />
+      <sap2010:ViewStateData Id="WriteLine_2" sap:VirtualizedContainerService.HintSize="211,62" />
+      <sap2010:ViewStateData Id="If_2" sap:VirtualizedContainerService.HintSize="464,212" />
+      <sap2010:ViewStateData Id="Sequence_3" sap:VirtualizedContainerService.HintSize="486,500">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="ApproveAtChecker_1" sap:VirtualizedContainerService.HintSize="464,22" />
+      <sap2010:ViewStateData Id="WriteLine_1" sap:VirtualizedContainerService.HintSize="211,62" />
+      <sap2010:ViewStateData Id="If_1" sap:VirtualizedContainerService.HintSize="464,212" />
+      <sap2010:ViewStateData Id="Sequence_4" sap:VirtualizedContainerService.HintSize="486,398">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Transition_6" sap:VirtualizedContainerService.HintSize="430,509">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <av:PointCollection x:Key="ConnectorLocation">333,164.4 93.45,164.4 93.45,120.5</av:PointCollection>
+            <x:Int32 x:Key="SrcConnectionPointIndex">69</x:Int32>
+            <x:Int32 x:Key="DestConnectionPointIndex">11</x:Int32>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="ApproveAtMakerCentral_1" sap:VirtualizedContainerService.HintSize="464,22" />
+      <sap2010:ViewStateData Id="WriteLine_3" sap:VirtualizedContainerService.HintSize="211,62" />
+      <sap2010:ViewStateData Id="If_3" sap:VirtualizedContainerService.HintSize="464,212" />
+      <sap2010:ViewStateData Id="Sequence_5" sap:VirtualizedContainerService.HintSize="486,398">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Transition_7" sap:VirtualizedContainerService.HintSize="430,516">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <av:PointCollection x:Key="ConnectorLocation">271.75,218 271.75,187.49194320198 475.032117000372,187.49194320198 475.032117000372,149.15 447,149.15</av:PointCollection>
+            <x:Int32 x:Key="SrcConnectionPointIndex">50</x:Int32>
+            <x:Int32 x:Key="DestConnectionPointIndex">48</x:Int32>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="ApproveAtCheckerCentral_1" sap:VirtualizedContainerService.HintSize="464,22" />
+      <sap2010:ViewStateData Id="WriteLine_4" sap:VirtualizedContainerService.HintSize="211,62" />
+      <sap2010:ViewStateData Id="If_4" sap:VirtualizedContainerService.HintSize="464,212" />
+      <sap2010:ViewStateData Id="Sequence_6" sap:VirtualizedContainerService.HintSize="486,398">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Transition_8" sap:VirtualizedContainerService.HintSize="430,516">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <av:PointCollection x:Key="ConnectorLocation">278.8,338.5 278.8,322.948484758954 147.5,322.948484758954 147.5,234 177.5,234</av:PointCollection>
+            <x:Int32 x:Key="SrcConnectionPointIndex">22</x:Int32>
+            <x:Int32 x:Key="DestConnectionPointIndex">17</x:Int32>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Transition_9" sap:VirtualizedContainerService.HintSize="430,516">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <av:PointCollection x:Key="ConnectorLocation">388,363.7 477,363.7 477,93.7 435.6,93.7 435.6,109.5</av:PointCollection>
+            <x:Int32 x:Key="SrcConnectionPointIndex">28</x:Int32>
+            <x:Int32 x:Key="DestConnectionPointIndex">70</x:Int32>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="ApproveAtSecondLevelQC_1" sap:VirtualizedContainerService.HintSize="464,22" />
+      <sap2010:ViewStateData Id="WriteLine_5" sap:VirtualizedContainerService.HintSize="211,62" />
+      <sap2010:ViewStateData Id="If_5" sap:VirtualizedContainerService.HintSize="464,212" />
+      <sap2010:ViewStateData Id="Sequence_7" sap:VirtualizedContainerService.HintSize="486,398">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Transition_10" sap:VirtualizedContainerService.HintSize="438,516">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <av:PointCollection x:Key="ConnectorLocation">223,543.05 193,543.05 193,360.55 232,360.55</av:PointCollection>
+            <x:Int32 x:Key="SrcConnectionPointIndex">41</x:Int32>
+            <x:Int32 x:Key="DestConnectionPointIndex">25</x:Int32>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Transition_11" sap:VirtualizedContainerService.HintSize="435,516">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <av:PointCollection x:Key="ConnectorLocation">337,540 493.505163649488,540 493.505163649488,90 418.5,90 418.5,109.5</av:PointCollection>
+            <x:Int32 x:Key="SrcConnectionPointIndex">36</x:Int32>
+            <x:Int32 x:Key="DestConnectionPointIndex">58</x:Int32>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="State_6" sap:VirtualizedContainerService.HintSize="114,61">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <av:Point x:Key="ShapeLocation">33,589.5</av:Point>
+            <av:Size x:Key="ShapeSize">114,61</av:Size>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Transition_16" sap:VirtualizedContainerService.HintSize="435,516">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <av:PointCollection x:Key="ConnectorLocation">280,570.5 280,600.5 193,600.5 193,570.5 90,570.5 90,589.5</av:PointCollection>
+            <x:Int32 x:Key="SrcConnectionPointIndex">39</x:Int32>
+            <x:Int32 x:Key="DestConnectionPointIndex">38</x:Int32>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Transition_18" sap:VirtualizedContainerService.HintSize="435,516">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <av:PointCollection x:Key="ConnectorLocation">223,558.3 32.5482447993426,558.3 32.5482447993426,77.8 73.5,77.8</av:PointCollection>
+            <x:Int32 x:Key="SrcConnectionPointIndex">61</x:Int32>
+            <x:Int32 x:Key="DestConnectionPointIndex">21</x:Int32>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="State_4" sap:VirtualizedContainerService.HintSize="512,825">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <av:Point x:Key="ShapeLocation">223,509.5</av:Point>
+            <av:Size x:Key="ShapeSize">114,61</av:Size>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Transition_12" sap:VirtualizedContainerService.HintSize="430,516">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <av:PointCollection x:Key="ConnectorLocation">317.8,401.5 317.8,431.5 268.6,431.5 268.6,509.5</av:PointCollection>
+            <x:Int32 x:Key="SrcConnectionPointIndex">43</x:Int32>
+            <x:Int32 x:Key="DestConnectionPointIndex">30</x:Int32>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="State_3" sap:VirtualizedContainerService.HintSize="156,63">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <av:Point x:Key="ShapeLocation">232,338.5</av:Point>
+            <av:Size x:Key="ShapeSize">156,63</av:Size>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+            <x:Double x:Key="StateContainerWidth">142.09981871009916</x:Double>
+            <x:Double x:Key="StateContainerHeight">26.684503419536441</x:Double>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Transition_13" sap:VirtualizedContainerService.HintSize="430,516">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <av:PointCollection x:Key="ConnectorLocation">177.5,256.4 152.2,256.4 152.2,296.162567117736 302.2,296.162567117736 302.2,338.5</av:PointCollection>
+            <x:Int32 x:Key="SrcConnectionPointIndex">45</x:Int32>
+            <x:Int32 x:Key="DestConnectionPointIndex">34</x:Int32>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Transition_17" sap:VirtualizedContainerService.HintSize="430,516">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <av:PointCollection x:Key="ConnectorLocation">213.75,218 213.75,188 43.5,188 43.5,93.05 73.5,93.05</av:PointCollection>
+            <x:Int32 x:Key="SrcConnectionPointIndex">18</x:Int32>
+            <x:Int32 x:Key="DestConnectionPointIndex">41</x:Int32>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="State_2" sap:VirtualizedContainerService.HintSize="145,64">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <av:Point x:Key="ShapeLocation">177.5,218</av:Point>
+            <av:Size x:Key="ShapeSize">145,64</av:Size>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+            <x:Double x:Key="StateContainerWidth">130.89383068013956</x:Double>
+            <x:Double x:Key="StateContainerHeight">27.884745139404231</x:Double>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Transition_14" sap:VirtualizedContainerService.HintSize="430,516">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <av:PointCollection x:Key="ConnectorLocation">401.4,170.5 401.4,250 322.5,250</av:PointCollection>
+            <x:Int32 x:Key="SrcConnectionPointIndex">47</x:Int32>
+            <x:Int32 x:Key="DestConnectionPointIndex">36</x:Int32>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="State_5" sap:VirtualizedContainerService.HintSize="114,61">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <av:Point x:Key="ShapeLocation">333,109.5</av:Point>
+            <av:Size x:Key="ShapeSize">114,61</av:Size>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Transition_15" sap:VirtualizedContainerService.HintSize="430,516">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <av:PointCollection x:Key="ConnectorLocation">140,120.5 140,140 333,140</av:PointCollection>
+            <x:Int32 x:Key="SrcConnectionPointIndex">39</x:Int32>
+            <x:Int32 x:Key="DestConnectionPointIndex">37</x:Int32>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="State_1" sap:VirtualizedContainerService.HintSize="512,858">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <av:Point x:Key="ShapeLocation">73.5,59.5</av:Point>
+            <av:Size x:Key="ShapeSize">133,61</av:Size>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+            <x:Double x:Key="StateContainerWidth">119</x:Double>
+            <x:Double x:Key="StateContainerHeight">25</x:Double>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="StateMachine_5" sap:VirtualizedContainerService.HintSize="614,726">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+            <av:Point x:Key="ShapeLocation">270,2.5</av:Point>
+            <x:Double x:Key="StateContainerWidth">600</x:Double>
+            <x:Double x:Key="StateContainerHeight">690.5</x:Double>
+            <av:PointCollection x:Key="ConnectorLocation">273,77.5 273,90 206.5,90</av:PointCollection>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="ComplaintManagementSystem_Workflow.flowchart_1" sap:VirtualizedContainerService.HintSize="654,806" />
+    </sap2010:ViewStateManager>
+  </sap2010:WorkflowViewState.ViewStateManager>
+</Activity>

@@ -1,0 +1,2 @@
+PromptAtMaker.g.xaml
+XamlStaticHelperNamespace._XamlStaticHelper

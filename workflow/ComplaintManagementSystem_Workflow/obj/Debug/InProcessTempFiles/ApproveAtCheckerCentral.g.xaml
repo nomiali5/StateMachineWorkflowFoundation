@@ -1,0 +1,173 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<c:ApproveAtCheckerCentral xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:c="clr-namespace:ComplaintManagementSystem_Workflow;assembly=ComplaintManagementSystem_Workflow" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mca="clr-namespace:Microsoft.CSharp.Activities;assembly=System.Activities" xmlns:sads="http://schemas.microsoft.com/netfx/2010/xaml/activities/debugger" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=mscorlib" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <TextExpression.NamespacesForImplementation>
+    <sco:Collection x:TypeArguments="x:String">
+      <x:String>System</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>System.Data</x:String>
+      <x:String>System.Linq</x:String>
+      <x:String>System.Text</x:String>
+    </sco:Collection>
+  </TextExpression.NamespacesForImplementation>
+  <TextExpression.ReferencesForImplementation>
+    <sco:Collection x:TypeArguments="AssemblyReference">
+      <AssemblyReference>Microsoft.CSharp</AssemblyReference>
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>System.Data</AssemblyReference>
+      <AssemblyReference>System.Runtime.Serialization</AssemblyReference>
+      <AssemblyReference>System.ServiceModel</AssemblyReference>
+      <AssemblyReference>System.ServiceModel.Activities</AssemblyReference>
+      <AssemblyReference>System.Xaml</AssemblyReference>
+      <AssemblyReference>System.Xml</AssemblyReference>
+      <AssemblyReference>System.Xml.Linq</AssemblyReference>
+      <AssemblyReference>mscorlib</AssemblyReference>
+      <AssemblyReference>ComplaintManagementSystem_Workflow</AssemblyReference>
+    </sco:Collection>
+  </TextExpression.ReferencesForImplementation>
+  <c:ApproveAtCheckerCentral.Implementation>
+    <Sequence>
+      <Sequence.Variables>
+        <Variable x:TypeArguments="x:String" Name="CriteriaAtCheckerCentral" />
+        <Variable x:TypeArguments="x:Int32" Name="getVerified" />
+      </Sequence.Variables>
+      <WriteLine>
+        <InArgument x:TypeArguments="x:String">
+          <mca:CSharpValue x:TypeArguments="x:String" xml:space="preserve">"Provided Document: " + ProvidedDocument +
+" -&gt; Checker Central: Enter Status? 1 for accept, 2 for reject, 3 send back to checker"</mca:CSharpValue>
+        </InArgument>
+      </WriteLine>
+      <Assign>
+        <Assign.To>
+          <OutArgument x:TypeArguments="x:Int32">
+            <mca:CSharpReference x:TypeArguments="x:Int32">getVerified</mca:CSharpReference>
+          </OutArgument>
+        </Assign.To>
+        <Assign.Value>
+          <InArgument x:TypeArguments="x:Int32">
+            <mca:CSharpValue x:TypeArguments="x:Int32">Convert.ToInt32(Console.ReadLine());</mca:CSharpValue>
+          </InArgument>
+        </Assign.Value>
+      </Assign>
+      <Switch x:TypeArguments="x:Int32">
+        <Switch.Expression>
+          <InArgument x:TypeArguments="x:Int32">
+            <mca:CSharpValue x:TypeArguments="x:Int32">getVerified</mca:CSharpValue>
+          </InArgument>
+        </Switch.Expression>
+        <Sequence x:Key="1">
+          <WriteLine Text="Approved at Checker Centeral" />
+          <Assign>
+            <Assign.To>
+              <OutArgument x:TypeArguments="x:Boolean">
+                <mca:CSharpReference x:TypeArguments="x:Boolean">isApprovedAtCheckerCentral</mca:CSharpReference>
+              </OutArgument>
+            </Assign.To>
+            <Assign.Value>
+              <InArgument x:TypeArguments="x:Boolean">True</InArgument>
+            </Assign.Value>
+          </Assign>
+          <Assign>
+            <Assign.To>
+              <OutArgument x:TypeArguments="x:Boolean">
+                <mca:CSharpReference x:TypeArguments="x:Boolean">sendBackToChecker</mca:CSharpReference>
+              </OutArgument>
+            </Assign.To>
+            <Assign.Value>
+              <InArgument x:TypeArguments="x:Boolean">False</InArgument>
+            </Assign.Value>
+          </Assign>
+          <Assign>
+            <Assign.To>
+              <OutArgument x:TypeArguments="x:String">
+                <mca:CSharpReference x:TypeArguments="x:String">rejectionComments</mca:CSharpReference>
+              </OutArgument>
+            </Assign.To>
+            <Assign.Value>
+              <InArgument x:TypeArguments="x:String">
+                <mca:CSharpValue x:TypeArguments="x:String">null</mca:CSharpValue>
+              </InArgument>
+            </Assign.Value>
+          </Assign>
+        </Sequence>
+        <Sequence x:Key="2">
+          <WriteLine Text="Rejected at Checker Centeral" />
+          <WriteLine Text="Please Enter Rejection Comments" />
+          <Assign>
+            <Assign.To>
+              <OutArgument x:TypeArguments="x:String">
+                <mca:CSharpReference x:TypeArguments="x:String">rejectionComments</mca:CSharpReference>
+              </OutArgument>
+            </Assign.To>
+            <Assign.Value>
+              <InArgument x:TypeArguments="x:String">
+                <mca:CSharpValue x:TypeArguments="x:String">Console.ReadLine()</mca:CSharpValue>
+              </InArgument>
+            </Assign.Value>
+          </Assign>
+          <Assign>
+            <Assign.To>
+              <OutArgument x:TypeArguments="x:Boolean">
+                <mca:CSharpReference x:TypeArguments="x:Boolean">isApprovedAtCheckerCentral</mca:CSharpReference>
+              </OutArgument>
+            </Assign.To>
+            <Assign.Value>
+              <InArgument x:TypeArguments="x:Boolean">False</InArgument>
+            </Assign.Value>
+          </Assign>
+          <Assign>
+            <Assign.To>
+              <OutArgument x:TypeArguments="x:Boolean">
+                <mca:CSharpReference x:TypeArguments="x:Boolean">sendBackToChecker</mca:CSharpReference>
+              </OutArgument>
+            </Assign.To>
+            <Assign.Value>
+              <InArgument x:TypeArguments="x:Boolean">False</InArgument>
+            </Assign.Value>
+          </Assign>
+        </Sequence>
+        <Sequence x:Key="3">
+          <Sequence.Variables>
+            <Variable x:TypeArguments="x:String" Name="rejectionCommentsForMaker" />
+          </Sequence.Variables>
+          <WriteLine Text="Rejected at Checker Centeral" />
+          <WriteLine Text="Please Enter Rejection Comments for checker" />
+          <Assign>
+            <Assign.To>
+              <OutArgument x:TypeArguments="x:String">
+                <mca:CSharpReference x:TypeArguments="x:String">rejectionComments</mca:CSharpReference>
+              </OutArgument>
+            </Assign.To>
+            <Assign.Value>
+              <InArgument x:TypeArguments="x:String">
+                <mca:CSharpValue x:TypeArguments="x:String">Console.ReadLine()</mca:CSharpValue>
+              </InArgument>
+            </Assign.Value>
+          </Assign>
+          <Assign>
+            <Assign.To>
+              <OutArgument x:TypeArguments="x:Boolean">
+                <mca:CSharpReference x:TypeArguments="x:Boolean">isApprovedAtCheckerCentral</mca:CSharpReference>
+              </OutArgument>
+            </Assign.To>
+            <Assign.Value>
+              <InArgument x:TypeArguments="x:Boolean">False</InArgument>
+            </Assign.Value>
+          </Assign>
+          <Assign>
+            <Assign.To>
+              <OutArgument x:TypeArguments="x:Boolean">
+                <mca:CSharpReference x:TypeArguments="x:Boolean">sendBackToChecker</mca:CSharpReference>
+              </OutArgument>
+            </Assign.To>
+            <Assign.Value>
+              <InArgument x:TypeArguments="x:Boolean">True</InArgument>
+            </Assign.Value>
+          </Assign>
+        </Sequence>
+      </Switch>
+      <sads:DebugSymbol.Symbol>d21DOlxVc2Vyc1xub3VtYW4uYWxpXERlc2t0b3BcV29ya2Zsb3dcd29ya2Zsb3dcQ29tcGxhaW50TWFuYWdlbWVudFN5c3RlbV9Xb3JrZmxvd1xBcHByb3ZlQXRDaGVja2VyQ2VudHJhbC54YW1sMC0DugEOAgEBMgU3EQMBjQE4BUMOAgF+RAW4AQ4CAQI0CTVtAwGOAUALQGwDAYYBOws7WwIBf0cLR1MCAQNKB2wSAgFabQeQARICATSRAQe3ARICAQpLCUtoAgF8TAlVEgIBc1YJXxICAWpgCWsSAgFbbgluaAIBWG8Jb2sCAVZwCXsSAgFHfAmFARICAT6GAQmPARICATWVAQmVAWgCATKWAQmWAXcCATCXAQmiARICAR+jAQmsARICARWtAQm2ARICAQtLR0tlAgF9UzVTOQIBe08PT3ACAXRdNV06AgFyWQ9ZZwIBa2gPaFECAWNjD2NmAgFcbkduZQIBWW9Hb2gCAVd4D3hfAgFPcw9zZgIBSIMBNYMBOgIBRn8Pf3ACAT+NATWNAToCAT2JAQ+JAWcCATaVAUeVAWUCATOWAUeWAXQCATGfAQ+fAV8CASiaAQ+aAWYCASCqATWqAToCAR6mAQ+mAXACARa0ATW0ATkCARSwAQ+wAWcCAQw=</sads:DebugSymbol.Symbol>
+    </Sequence>
+  </c:ApproveAtCheckerCentral.Implementation>
+</c:ApproveAtCheckerCentral>

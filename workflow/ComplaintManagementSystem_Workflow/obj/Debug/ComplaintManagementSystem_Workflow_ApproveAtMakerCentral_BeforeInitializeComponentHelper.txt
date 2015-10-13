@@ -1,0 +1,2 @@
+ApproveAtMakerCentral.g.xaml
+XamlStaticHelperNamespace._XamlStaticHelper

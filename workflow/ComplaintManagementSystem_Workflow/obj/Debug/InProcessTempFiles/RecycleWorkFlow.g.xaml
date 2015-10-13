@@ -1,0 +1,143 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<local:RecycleWorkFlow xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:local="clr-namespace:ComplaintManagementSystem_Workflow;assembly=ComplaintManagementSystem_Workflow" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mca="clr-namespace:Microsoft.CSharp.Activities;assembly=System.Activities" xmlns:sads="http://schemas.microsoft.com/netfx/2010/xaml/activities/debugger" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=mscorlib" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <TextExpression.NamespacesForImplementation>
+    <sco:Collection x:TypeArguments="x:String">
+      <x:String>System</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>System.Data</x:String>
+      <x:String>System.Linq</x:String>
+      <x:String>System.Text</x:String>
+    </sco:Collection>
+  </TextExpression.NamespacesForImplementation>
+  <TextExpression.ReferencesForImplementation>
+    <sco:Collection x:TypeArguments="AssemblyReference">
+      <AssemblyReference>Microsoft.CSharp</AssemblyReference>
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>System.Data</AssemblyReference>
+      <AssemblyReference>System.Runtime.Serialization</AssemblyReference>
+      <AssemblyReference>System.ServiceModel</AssemblyReference>
+      <AssemblyReference>System.ServiceModel.Activities</AssemblyReference>
+      <AssemblyReference>System.Xaml</AssemblyReference>
+      <AssemblyReference>System.Xml</AssemblyReference>
+      <AssemblyReference>System.Xml.Linq</AssemblyReference>
+      <AssemblyReference>mscorlib</AssemblyReference>
+      <AssemblyReference>ComplaintManagementSystem_Workflow</AssemblyReference>
+    </sco:Collection>
+  </TextExpression.ReferencesForImplementation>
+  <local:RecycleWorkFlow.Implementation>
+    <Sequence>
+      <Sequence.Variables>
+        <Variable x:TypeArguments="x:String" Name="ProvidedDocument" />
+        <Variable x:TypeArguments="x:String" Name="CorrectDocument" />
+        <Variable x:TypeArguments="x:Boolean" Name="isApprovedAtChecker" />
+        <Variable x:TypeArguments="x:Boolean" Name="isApprovedAtMakerCentral" />
+        <Variable x:TypeArguments="x:Boolean" Name="isFinallyApproved" />
+        <Variable x:TypeArguments="x:Boolean" Name="isApprovedAtCheckerCentral" />
+      </Sequence.Variables>
+      <local:PromptAtMaker RequiredDocument="ProvidedDoc" Text="Please upload required documents">
+        <local:PromptAtMaker.Result>
+          <OutArgument x:TypeArguments="x:String">
+            <mca:CSharpReference x:TypeArguments="x:String">ProvidedDocument</mca:CSharpReference>
+          </OutArgument>
+        </local:PromptAtMaker.Result>
+      </local:PromptAtMaker>
+      <local:ApproveAtChecker>
+        <local:ApproveAtChecker.ProvidedDocument>
+          <InArgument x:TypeArguments="x:String">
+            <mca:CSharpValue x:TypeArguments="x:String">ProvidedDocument</mca:CSharpValue>
+          </InArgument>
+        </local:ApproveAtChecker.ProvidedDocument>
+        <local:ApproveAtChecker.isApprovedAtChecker>
+          <OutArgument x:TypeArguments="x:Boolean">
+            <mca:CSharpReference x:TypeArguments="x:Boolean">isApprovedAtChecker</mca:CSharpReference>
+          </OutArgument>
+        </local:ApproveAtChecker.isApprovedAtChecker>
+      </local:ApproveAtChecker>
+      <If>
+        <If.Condition>
+          <InArgument x:TypeArguments="x:Boolean">
+            <mca:CSharpValue x:TypeArguments="x:Boolean">isApprovedAtChecker</mca:CSharpValue>
+          </InArgument>
+        </If.Condition>
+        <If.Then>
+          <Sequence>
+            <local:ApproveAtMakerCentral>
+              <local:ApproveAtMakerCentral.ProvidedDocument>
+                <InArgument x:TypeArguments="x:String">
+                  <mca:CSharpValue x:TypeArguments="x:String">ProvidedDocument</mca:CSharpValue>
+                </InArgument>
+              </local:ApproveAtMakerCentral.ProvidedDocument>
+              <local:ApproveAtMakerCentral.isApproveAtMakerCentral>
+                <OutArgument x:TypeArguments="x:Boolean">
+                  <mca:CSharpReference x:TypeArguments="x:Boolean">isApprovedAtMakerCentral</mca:CSharpReference>
+                </OutArgument>
+              </local:ApproveAtMakerCentral.isApproveAtMakerCentral>
+            </local:ApproveAtMakerCentral>
+            <If>
+              <If.Condition>
+                <InArgument x:TypeArguments="x:Boolean">
+                  <mca:CSharpValue x:TypeArguments="x:Boolean">isApprovedAtMakerCentral</mca:CSharpValue>
+                </InArgument>
+              </If.Condition>
+              <If.Then>
+                <Sequence>
+                  <local:ApproveAtCheckerCentral>
+                    <local:ApproveAtCheckerCentral.ProvidedDocument>
+                      <InArgument x:TypeArguments="x:String">
+                        <mca:CSharpValue x:TypeArguments="x:String">ProvidedDocument</mca:CSharpValue>
+                      </InArgument>
+                    </local:ApproveAtCheckerCentral.ProvidedDocument>
+                    <local:ApproveAtCheckerCentral.isApprovedAtCheckerCentral>
+                      <OutArgument x:TypeArguments="x:Boolean">
+                        <mca:CSharpReference x:TypeArguments="x:Boolean">isApprovedAtCheckerCentral</mca:CSharpReference>
+                      </OutArgument>
+                    </local:ApproveAtCheckerCentral.isApprovedAtCheckerCentral>
+                  </local:ApproveAtCheckerCentral>
+                  <If>
+                    <If.Condition>
+                      <InArgument x:TypeArguments="x:Boolean">
+                        <mca:CSharpValue x:TypeArguments="x:Boolean">isApprovedAtCheckerCentral</mca:CSharpValue>
+                      </InArgument>
+                    </If.Condition>
+                    <If.Then>
+                      <Sequence>
+                        <local:ApproveAtSecondLevelQC>
+                          <local:ApproveAtSecondLevelQC.ProvidedDocument>
+                            <InArgument x:TypeArguments="x:String">
+                              <mca:CSharpValue x:TypeArguments="x:String">ProvidedDocument</mca:CSharpValue>
+                            </InArgument>
+                          </local:ApproveAtSecondLevelQC.ProvidedDocument>
+                          <local:ApproveAtSecondLevelQC.isFinallyApproved>
+                            <OutArgument x:TypeArguments="x:Boolean">
+                              <mca:CSharpReference x:TypeArguments="x:Boolean">isFinallyApproved</mca:CSharpReference>
+                            </OutArgument>
+                          </local:ApproveAtSecondLevelQC.isFinallyApproved>
+                        </local:ApproveAtSecondLevelQC>
+                        <If>
+                          <If.Condition>
+                            <InArgument x:TypeArguments="x:Boolean">
+                              <mca:CSharpValue x:TypeArguments="x:Boolean">isFinallyApproved</mca:CSharpValue>
+                            </InArgument>
+                          </If.Condition>
+                          <If.Then>
+                            <Sequence>
+                              <WriteLine Text="Flow Completed" />
+                              <TerminateWorkflow Reason="Document Approved" />
+                            </Sequence>
+                          </If.Then>
+                        </If>
+                      </Sequence>
+                    </If.Then>
+                  </If>
+                </Sequence>
+              </If.Then>
+            </If>
+          </Sequence>
+        </If.Then>
+      </If>
+      <sads:DebugSymbol.Symbol>d2VDOlxVc2Vyc1xub3VtYW4uYWxpXERlc2t0b3BcV29ya2Zsb3dcd29ya2Zsb3dcQ29tcGxhaW50TWFuYWdlbWVudFN5c3RlbV9Xb3JrZmxvd1xSZWN5Y2xlV29ya0Zsb3cueGFtbCEsA5sBDgIBATUFOxsCAX48BUceAgFrSAWZAQoCAQI1cDWSAQMBiQE1XTVqAwGIATgLOGECAX9EC0RlAgF1Pws/WQIBbEsLS10CAQNPCZcBFAIBDFALWykCAVhcC5YBEAIBDVgRWHACAWJTEVNfAgFZXxFfaAIBDmMPlAEaAgEXZBFvMQIBRXARkwEWAgEYbBdseAIBT2cXZ2UCAUZzF3NwAgEZdxWRASACASJ4F4MBNgIBMoQBF5ABHAIBI4ABHYABdQIBPHsde2sCATOHAR2HAW0CASSLARuOASYCAS2MAR2MAW4CATCNAR2NAYMBAgEujAFbjAFrAgExjQFtjQGAAQIBLw==</sads:DebugSymbol.Symbol>
+    </Sequence>
+  </local:RecycleWorkFlow.Implementation>
+</local:RecycleWorkFlow>

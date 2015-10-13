@@ -1,0 +1,250 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<c:ApproveAtSecondLevelQC xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:c="clr-namespace:ComplaintManagementSystem_Workflow;assembly=ComplaintManagementSystem_Workflow" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mca="clr-namespace:Microsoft.CSharp.Activities;assembly=System.Activities" xmlns:sads="http://schemas.microsoft.com/netfx/2010/xaml/activities/debugger" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=mscorlib" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <TextExpression.NamespacesForImplementation>
+    <sco:Collection x:TypeArguments="x:String">
+      <x:String>System</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>System.Data</x:String>
+      <x:String>System.Linq</x:String>
+      <x:String>System.Text</x:String>
+    </sco:Collection>
+  </TextExpression.NamespacesForImplementation>
+  <TextExpression.ReferencesForImplementation>
+    <sco:Collection x:TypeArguments="AssemblyReference">
+      <AssemblyReference>Microsoft.CSharp</AssemblyReference>
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>System.Data</AssemblyReference>
+      <AssemblyReference>System.Runtime.Serialization</AssemblyReference>
+      <AssemblyReference>System.ServiceModel</AssemblyReference>
+      <AssemblyReference>System.ServiceModel.Activities</AssemblyReference>
+      <AssemblyReference>System.Xaml</AssemblyReference>
+      <AssemblyReference>System.Xml</AssemblyReference>
+      <AssemblyReference>System.Xml.Linq</AssemblyReference>
+      <AssemblyReference>mscorlib</AssemblyReference>
+      <AssemblyReference>ComplaintManagementSystem_Workflow</AssemblyReference>
+    </sco:Collection>
+  </TextExpression.ReferencesForImplementation>
+  <c:ApproveAtSecondLevelQC.Implementation>
+    <Sequence>
+      <Sequence.Variables>
+        <Variable x:TypeArguments="x:String" Name="SecondLevelQCApprovalValue" />
+        <Variable x:TypeArguments="x:Int32" Name="getVerified" />
+      </Sequence.Variables>
+      <WriteLine>
+        <InArgument x:TypeArguments="x:String">
+          <mca:CSharpValue x:TypeArguments="x:String" xml:space="preserve">"Provided Document: " + ProvidedDocument +
+" -&gt; 2nd Level QC: Enter Status? 1 for accept, 2 for reject, 3 send to maker, 4 send back to checker"</mca:CSharpValue>
+        </InArgument>
+      </WriteLine>
+      <Assign>
+        <Assign.To>
+          <OutArgument x:TypeArguments="x:Int32">
+            <mca:CSharpReference x:TypeArguments="x:Int32">getVerified</mca:CSharpReference>
+          </OutArgument>
+        </Assign.To>
+        <Assign.Value>
+          <InArgument x:TypeArguments="x:Int32">
+            <mca:CSharpValue x:TypeArguments="x:Int32">Convert.ToInt32(Console.ReadLine());</mca:CSharpValue>
+          </InArgument>
+        </Assign.Value>
+      </Assign>
+      <Switch x:TypeArguments="x:Int32">
+        <Switch.Expression>
+          <InArgument x:TypeArguments="x:Int32">
+            <mca:CSharpValue x:TypeArguments="x:Int32">getVerified</mca:CSharpValue>
+          </InArgument>
+        </Switch.Expression>
+        <Sequence x:Key="1">
+          <WriteLine Text="Approved from Second Level QC" />
+          <Assign>
+            <Assign.To>
+              <OutArgument x:TypeArguments="x:Boolean">
+                <mca:CSharpReference x:TypeArguments="x:Boolean">isFinallyApproved</mca:CSharpReference>
+              </OutArgument>
+            </Assign.To>
+            <Assign.Value>
+              <InArgument x:TypeArguments="x:Boolean">True</InArgument>
+            </Assign.Value>
+          </Assign>
+          <Assign>
+            <Assign.To>
+              <OutArgument x:TypeArguments="x:Boolean">
+                <mca:CSharpReference x:TypeArguments="x:Boolean">sendBackToMaker</mca:CSharpReference>
+              </OutArgument>
+            </Assign.To>
+            <Assign.Value>
+              <InArgument x:TypeArguments="x:Boolean">False</InArgument>
+            </Assign.Value>
+          </Assign>
+          <WriteLine Text="Application Approved Successfully" />
+          <Assign>
+            <Assign.To>
+              <OutArgument x:TypeArguments="x:Boolean">
+                <mca:CSharpReference x:TypeArguments="x:Boolean">sendBackToChecker</mca:CSharpReference>
+              </OutArgument>
+            </Assign.To>
+            <Assign.Value>
+              <InArgument x:TypeArguments="x:Boolean">False</InArgument>
+            </Assign.Value>
+          </Assign>
+          <Assign>
+            <Assign.To>
+              <OutArgument x:TypeArguments="x:String">
+                <mca:CSharpReference x:TypeArguments="x:String">rejectionComments</mca:CSharpReference>
+              </OutArgument>
+            </Assign.To>
+            <Assign.Value>
+              <InArgument x:TypeArguments="x:String">
+                <mca:CSharpValue x:TypeArguments="x:String">null</mca:CSharpValue>
+              </InArgument>
+            </Assign.Value>
+          </Assign>
+        </Sequence>
+        <Sequence x:Key="2">
+          <WriteLine Text="Rejected from Second Level QC" />
+          <WriteLine Text="Please Enter Rejection Comments" />
+          <Assign>
+            <Assign.To>
+              <OutArgument x:TypeArguments="x:String">
+                <mca:CSharpReference x:TypeArguments="x:String">rejectionComments</mca:CSharpReference>
+              </OutArgument>
+            </Assign.To>
+            <Assign.Value>
+              <InArgument x:TypeArguments="x:String">
+                <mca:CSharpValue x:TypeArguments="x:String">Console.ReadLine()</mca:CSharpValue>
+              </InArgument>
+            </Assign.Value>
+          </Assign>
+          <Assign>
+            <Assign.To>
+              <OutArgument x:TypeArguments="x:Boolean">
+                <mca:CSharpReference x:TypeArguments="x:Boolean">isFinallyApproved</mca:CSharpReference>
+              </OutArgument>
+            </Assign.To>
+            <Assign.Value>
+              <InArgument x:TypeArguments="x:Boolean">False</InArgument>
+            </Assign.Value>
+          </Assign>
+          <Assign>
+            <Assign.To>
+              <OutArgument x:TypeArguments="x:Boolean">
+                <mca:CSharpReference x:TypeArguments="x:Boolean">sendBackToMaker</mca:CSharpReference>
+              </OutArgument>
+            </Assign.To>
+            <Assign.Value>
+              <InArgument x:TypeArguments="x:Boolean">False</InArgument>
+            </Assign.Value>
+          </Assign>
+          <Assign>
+            <Assign.To>
+              <OutArgument x:TypeArguments="x:Boolean">
+                <mca:CSharpReference x:TypeArguments="x:Boolean">sendBackToChecker</mca:CSharpReference>
+              </OutArgument>
+            </Assign.To>
+            <Assign.Value>
+              <InArgument x:TypeArguments="x:Boolean">False</InArgument>
+            </Assign.Value>
+          </Assign>
+        </Sequence>
+        <Sequence x:Key="3">
+          <Sequence.Variables>
+            <Variable x:TypeArguments="x:String" Name="rejectionComments" />
+          </Sequence.Variables>
+          <WriteLine Text="Rejected from Second Level QC" />
+          <WriteLine Text="Please Enter Rejection Comments for maker" />
+          <Assign>
+            <Assign.To>
+              <OutArgument x:TypeArguments="x:String">
+                <mca:CSharpReference x:TypeArguments="x:String">rejectionComments</mca:CSharpReference>
+              </OutArgument>
+            </Assign.To>
+            <Assign.Value>
+              <InArgument x:TypeArguments="x:String">
+                <mca:CSharpValue x:TypeArguments="x:String">Console.ReadLine()</mca:CSharpValue>
+              </InArgument>
+            </Assign.Value>
+          </Assign>
+          <Assign>
+            <Assign.To>
+              <OutArgument x:TypeArguments="x:Boolean">
+                <mca:CSharpReference x:TypeArguments="x:Boolean">isFinallyApproved</mca:CSharpReference>
+              </OutArgument>
+            </Assign.To>
+            <Assign.Value>
+              <InArgument x:TypeArguments="x:Boolean">False</InArgument>
+            </Assign.Value>
+          </Assign>
+          <Assign>
+            <Assign.To>
+              <OutArgument x:TypeArguments="x:Boolean">
+                <mca:CSharpReference x:TypeArguments="x:Boolean">sendBackToMaker</mca:CSharpReference>
+              </OutArgument>
+            </Assign.To>
+            <Assign.Value>
+              <InArgument x:TypeArguments="x:Boolean">True</InArgument>
+            </Assign.Value>
+          </Assign>
+          <Assign>
+            <Assign.To>
+              <OutArgument x:TypeArguments="x:Boolean">
+                <mca:CSharpReference x:TypeArguments="x:Boolean">sendBackToChecker</mca:CSharpReference>
+              </OutArgument>
+            </Assign.To>
+            <Assign.Value>
+              <InArgument x:TypeArguments="x:Boolean">False</InArgument>
+            </Assign.Value>
+          </Assign>
+        </Sequence>
+        <Sequence x:Key="4">
+          <WriteLine Text="Rejected from Second Level QC" />
+          <WriteLine Text="Please Enter Rejection Comments for checker" />
+          <Assign>
+            <Assign.To>
+              <OutArgument x:TypeArguments="x:String">
+                <mca:CSharpReference x:TypeArguments="x:String">rejectionComments</mca:CSharpReference>
+              </OutArgument>
+            </Assign.To>
+            <Assign.Value>
+              <InArgument x:TypeArguments="x:String">
+                <mca:CSharpValue x:TypeArguments="x:String">Console.ReadLine()</mca:CSharpValue>
+              </InArgument>
+            </Assign.Value>
+          </Assign>
+          <Assign>
+            <Assign.To>
+              <OutArgument x:TypeArguments="x:Boolean">
+                <mca:CSharpReference x:TypeArguments="x:Boolean">isFinallyApproved</mca:CSharpReference>
+              </OutArgument>
+            </Assign.To>
+            <Assign.Value>
+              <InArgument x:TypeArguments="x:Boolean">False</InArgument>
+            </Assign.Value>
+          </Assign>
+          <Assign>
+            <Assign.To>
+              <OutArgument x:TypeArguments="x:Boolean">
+                <mca:CSharpReference x:TypeArguments="x:Boolean">sendBackToMaker</mca:CSharpReference>
+              </OutArgument>
+            </Assign.To>
+            <Assign.Value>
+              <InArgument x:TypeArguments="x:Boolean">False</InArgument>
+            </Assign.Value>
+          </Assign>
+          <Assign>
+            <Assign.To>
+              <OutArgument x:TypeArguments="x:Boolean">
+                <mca:CSharpReference x:TypeArguments="x:Boolean">sendBackToChecker</mca:CSharpReference>
+              </OutArgument>
+            </Assign.To>
+            <Assign.Value>
+              <InArgument x:TypeArguments="x:Boolean">True</InArgument>
+            </Assign.Value>
+          </Assign>
+        </Sequence>
+      </Switch>
+      <sads:DebugSymbol.Symbol>9xBnNWlopYPx495tlcPyfrPlbEM6XFVzZXJzXG5vdW1hbi5hbGlcRGVza3RvcFxXb3JrZmxvd1x3b3JrZmxvd1xDb21wbGFpbnRNYW5hZ2VtZW50U3lzdGVtX1dvcmtmbG93XEFwcHJvdmVBdFNlY29uZExldmVsUUMueGFtbEwuA4gCDgIBATMFOBEDAfEBOQVEDgMB4AFFBYYCDgIBAjUJNnsDAfIBQQtBbAMB6QE8CzxbAwHhAUgLSFMCAQNLB3gSAwGsAXkHpgESAgF4pwEH1wESAgE/2AEHhQISAgELTAlMaQMB3gFNCVYSAwHUAVcJYBIDAcoBYQlhbQMByAFiCWsSAwG+AWwJdxIDAa0Begl6aQMBqgF7CXtrAwGoAXwJhwESAwGXAYgBCZEBEgMBjQGSAQmbARIDAYMBnAEJpQESAgF5qwEJqwFpAgF2rAEJrAF2AgF0rQEJuAESAgFhuQEJwgESAgFWwwEJzAESAgFLzQEJ1gESAgFA2QEJ2QFqAgE92gEJ2gF4AgE72wEJ5gESAgEq5wEJ8AESAgEg8QEJ+gESAgEW+wEJhAISAgEMTEdMZgMB3wFUNVQ5AwHdAVAPUGcDAdUBXjVeOgMB0wFaD1plAwHLAWFHYWoDAckBaTVpOgMBxwFlD2VnAwG/AXQPdFEDAbYBbw9vZgMBrgF6R3pmAwGrAXtHe2gDAakBhAEPhAFfAwGgAX8Pf2YDAZgBjwE1jwE6AwGWAYsBD4sBZwMBjgGZATWZAToDAYwBlQEPlQFlAwGEAaMBNaMBOgMBggGfAQ+fAWcCAXqrAUerAWYCAXesAUisAXMCAXW1AQ+1AV8CAWuwAQ+wAWYCAWLAATXAAToCAWC8AQ+8AWcCAVfKATXKATkCAVXGAQ/GAWUCAUzUATXUAToCAUrQAQ/QAWcCAUHZAUjZAWcCAT7aAUjaAXUCATzjAQ/jAV8CATPeAQ/eAWYCASvuATXuAToCASnqAQ/qAWcCASH4ATX4AToCAR/0AQ/0AWUCAReCAjWCAjkCARX+AQ/+AWcCAQ0=</sads:DebugSymbol.Symbol>
+    </Sequence>
+  </c:ApproveAtSecondLevelQC.Implementation>
+</c:ApproveAtSecondLevelQC>

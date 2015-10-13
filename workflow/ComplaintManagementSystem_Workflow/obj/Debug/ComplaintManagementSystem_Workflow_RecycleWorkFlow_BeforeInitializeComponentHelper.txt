@@ -1,0 +1,2 @@
+RecycleWorkFlow.g.xaml
+XamlStaticHelperNamespace._XamlStaticHelper

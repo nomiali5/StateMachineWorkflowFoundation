@@ -1,0 +1,233 @@
+﻿<Activity mc:Ignorable="sap sap2010 sads" x:Class="ComplaintManagementSystem_Workflow.Workflow"
+ xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
+ xmlns:local="clr-namespace:ComplaintManagementSystem_Workflow"
+ xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+ xmlns:mca="clr-namespace:Microsoft.CSharp.Activities;assembly=System.Activities"
+ xmlns:sads="http://schemas.microsoft.com/netfx/2010/xaml/activities/debugger"
+ xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation"
+ xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation"
+ xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib"
+ xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=mscorlib"
+ xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <x:Members>
+    <x:Property Name="CorrDoc" Type="InArgument(x:String)" />
+    <x:Property Name="Result" Type="InArgument(x:String)" />
+  </x:Members>
+  <sap2010:ExpressionActivityEditor.ExpressionActivityEditor>C#</sap2010:ExpressionActivityEditor.ExpressionActivityEditor>
+  <sap2010:WorkflowViewState.IdRef>ComplaintManagementSystem_Workflow.Workflow_1</sap2010:WorkflowViewState.IdRef>
+  <TextExpression.NamespacesForImplementation>
+    <sco:Collection x:TypeArguments="x:String">
+      <x:String>System</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>System.Data</x:String>
+      <x:String>System.Linq</x:String>
+      <x:String>System.Text</x:String>
+    </sco:Collection>
+  </TextExpression.NamespacesForImplementation>
+  <TextExpression.ReferencesForImplementation>
+    <sco:Collection x:TypeArguments="AssemblyReference">
+      <AssemblyReference>Microsoft.CSharp</AssemblyReference>
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>System.Data</AssemblyReference>
+      <AssemblyReference>System.Runtime.Serialization</AssemblyReference>
+      <AssemblyReference>System.ServiceModel</AssemblyReference>
+      <AssemblyReference>System.ServiceModel.Activities</AssemblyReference>
+      <AssemblyReference>System.Xaml</AssemblyReference>
+      <AssemblyReference>System.Xml</AssemblyReference>
+      <AssemblyReference>System.Xml.Linq</AssemblyReference>
+      <AssemblyReference>mscorlib</AssemblyReference>
+      <AssemblyReference>ComplaintManagementSystem_Workflow</AssemblyReference>
+    </sco:Collection>
+  </TextExpression.ReferencesForImplementation>
+  <Sequence sap2010:WorkflowViewState.IdRef="Sequence_1">
+    <Sequence.Variables>
+      <Variable x:TypeArguments="x:String" Name="ProvidedDocument" />
+      <Variable x:TypeArguments="x:String" Name="CorrectDocument" />
+      <Variable x:TypeArguments="x:Boolean" Name="isApprovedAtChecker" />
+      <Variable x:TypeArguments="x:Boolean" Name="isApprovedAtMakerCentral" />
+      <Variable x:TypeArguments="x:Boolean" Name="isFinallyApproved" />
+      <Variable x:TypeArguments="x:Boolean" Name="isApprovedAtCheckerCentral" />
+    </Sequence.Variables>
+    <Assign sap2010:WorkflowViewState.IdRef="Assign_1">
+      <Assign.To>
+        <OutArgument x:TypeArguments="x:String">
+          <mca:CSharpReference x:TypeArguments="x:String">CorrectDocument</mca:CSharpReference>
+        </OutArgument>
+      </Assign.To>
+      <Assign.Value>
+        <InArgument x:TypeArguments="x:String">
+          <mca:CSharpValue x:TypeArguments="x:String">CorrDoc</mca:CSharpValue>
+        </InArgument>
+      </Assign.Value>
+    </Assign>
+    <Sequence sap2010:WorkflowViewState.IdRef="Sequence_2">
+      <local:PromptAtMaker sap2010:WorkflowViewState.IdRef="PromptAtMaker_1" RequiredDocument="ProvidedDoc" Text="Please upload required documents">
+        <local:PromptAtMaker.Result>
+          <OutArgument x:TypeArguments="x:String">
+            <mca:CSharpReference x:TypeArguments="x:String">ProvidedDocument</mca:CSharpReference>
+          </OutArgument>
+        </local:PromptAtMaker.Result>
+      </local:PromptAtMaker>
+      <local:ApproveAtChecker sap2010:WorkflowViewState.IdRef="ApproveAtChecker_1">
+        <local:ApproveAtChecker.ProvidedDocument>
+          <InArgument x:TypeArguments="x:String">
+            <mca:CSharpValue x:TypeArguments="x:String">ProvidedDocument</mca:CSharpValue>
+          </InArgument>
+        </local:ApproveAtChecker.ProvidedDocument>
+        <local:ApproveAtChecker.isApprovedAtChecker>
+          <OutArgument x:TypeArguments="x:Boolean">
+            <mca:CSharpReference x:TypeArguments="x:Boolean">isApprovedAtChecker</mca:CSharpReference>
+          </OutArgument>
+        </local:ApproveAtChecker.isApprovedAtChecker>
+      </local:ApproveAtChecker>
+      <If sap2010:WorkflowViewState.IdRef="If_2">
+        <If.Condition>
+          <InArgument x:TypeArguments="x:Boolean">
+            <mca:CSharpValue x:TypeArguments="x:Boolean">isApprovedAtChecker</mca:CSharpValue>
+          </InArgument>
+        </If.Condition>
+        <If.Then>
+          <Sequence sap2010:WorkflowViewState.IdRef="Sequence_3">
+            <local:ApproveAtMakerCentral sap2010:WorkflowViewState.IdRef="ApproveAtMakerCentral_1">
+              <local:ApproveAtMakerCentral.ProvidedDocument>
+                <InArgument x:TypeArguments="x:String">
+                  <mca:CSharpValue x:TypeArguments="x:String">ProvidedDocument</mca:CSharpValue>
+                </InArgument>
+              </local:ApproveAtMakerCentral.ProvidedDocument>
+              <local:ApproveAtMakerCentral.isApproveAtMakerCentral>
+                <OutArgument x:TypeArguments="x:Boolean">
+                  <mca:CSharpReference x:TypeArguments="x:Boolean">isApprovedAtMakerCentral</mca:CSharpReference>
+                </OutArgument>
+              </local:ApproveAtMakerCentral.isApproveAtMakerCentral>
+            </local:ApproveAtMakerCentral>
+            <If sap2010:WorkflowViewState.IdRef="If_1">
+              <If.Condition>
+                <InArgument x:TypeArguments="x:Boolean">
+                  <mca:CSharpValue x:TypeArguments="x:Boolean">isApprovedAtMakerCentral</mca:CSharpValue>
+                </InArgument>
+              </If.Condition>
+              <If.Then>
+                <Sequence sap2010:WorkflowViewState.IdRef="Sequence_4">
+                  <local:ApproveAtCheckerCentral sap2010:WorkflowViewState.IdRef="ApproveAtCheckerCentral_1">
+                    <local:ApproveAtCheckerCentral.ProvidedDocument>
+                      <InArgument x:TypeArguments="x:String">
+                        <mca:CSharpValue x:TypeArguments="x:String">ProvidedDocument</mca:CSharpValue>
+                      </InArgument>
+                    </local:ApproveAtCheckerCentral.ProvidedDocument>
+                    <local:ApproveAtCheckerCentral.isApprovedAtCheckerCentral>
+                      <OutArgument x:TypeArguments="x:Boolean">
+                        <mca:CSharpReference x:TypeArguments="x:Boolean">isApprovedAtCheckerCentral</mca:CSharpReference>
+                      </OutArgument>
+                    </local:ApproveAtCheckerCentral.isApprovedAtCheckerCentral>
+                  </local:ApproveAtCheckerCentral>
+                  <If sap2010:WorkflowViewState.IdRef="If_3">
+                    <If.Condition>
+                      <InArgument x:TypeArguments="x:Boolean">
+                        <mca:CSharpValue x:TypeArguments="x:Boolean">isApprovedAtCheckerCentral</mca:CSharpValue>
+                      </InArgument>
+                    </If.Condition>
+                    <If.Then>
+                      <Sequence sap2010:WorkflowViewState.IdRef="Sequence_5">
+                        <local:ApproveAtSecondLevelQC sap2010:WorkflowViewState.IdRef="ApproveAtSecondLevelQC_1">
+                          <local:ApproveAtSecondLevelQC.ProvidedDocument>
+                            <InArgument x:TypeArguments="x:String">
+                              <mca:CSharpValue x:TypeArguments="x:String">ProvidedDocument</mca:CSharpValue>
+                            </InArgument>
+                          </local:ApproveAtSecondLevelQC.ProvidedDocument>
+                          <local:ApproveAtSecondLevelQC.isFinallyApproved>
+                            <OutArgument x:TypeArguments="x:Boolean">
+                              <mca:CSharpReference x:TypeArguments="x:Boolean">isFinallyApproved</mca:CSharpReference>
+                            </OutArgument>
+                          </local:ApproveAtSecondLevelQC.isFinallyApproved>
+                        </local:ApproveAtSecondLevelQC>
+                        <If sap2010:WorkflowViewState.IdRef="If_4">
+                          <If.Condition>
+                            <InArgument x:TypeArguments="x:Boolean">
+                              <mca:CSharpValue x:TypeArguments="x:Boolean">isFinallyApproved</mca:CSharpValue>
+                            </InArgument>
+                          </If.Condition>
+                          <If.Then>
+                            <Sequence sap2010:WorkflowViewState.IdRef="Sequence_6">
+                              <WriteLine sap2010:WorkflowViewState.IdRef="WriteLine_1" Text="Flow Completed" />
+                              <TerminateWorkflow sap2010:WorkflowViewState.IdRef="TerminateWorkflow_1" Reason="Document Approved" />
+                            </Sequence>
+                          </If.Then>
+                        </If>
+                      </Sequence>
+                    </If.Then>
+                  </If>
+                </Sequence>
+              </If.Then>
+            </If>
+          </Sequence>
+        </If.Then>
+        <If.Else>
+          <WriteLine sap2010:WorkflowViewState.IdRef="WriteLine_2" Text="Goes back to MakerAtBank to reupload" />
+        </If.Else>
+      </If>
+    </Sequence>
+    <sads:DebugSymbol.Symbol>d15DOlxVc2Vyc1xub3VtYW4uYWxpXERlc2t0b3BcV29ya2Zsb3dcd29ya2Zsb3dcQ29tcGxhaW50TWFuYWdlbWVudFN5c3RlbV9Xb3JrZmxvd1xXb3JrZmxvdy54YW1sJywDrAEOAgEBNQVADgMBjQFBBaoBEAIBAj0LPVADAZcBOAs4YAMBjgFCB0gdAwGBAUkHVCACAW5VB6kBDAIBA0JyQpQBAwGMAUJfQmwDAYsBRQ1FYwMBggFRDVFnAgF4TA1MWwIBb1gNWF8CAQRcC6QBFgIBD6cBC6cBcgIBDV0NaCsCAVtpDaMBEgIBEKcBSacBbwIBDmUTZXICAWVgE2BhAgFcbBNsagIBEXARoQEcAgEacRN8MwIBSH0ToAEYAgEbeRl5egIBUnQZdGcCAUmAARmAAXICARyEAReeASICASWFARmQATgCATWRARmdAR4CASaNAR+NAXcCAT+IAR+IAW0CATaUAR+UAW8CASeYAR2bASgCATCZAR+ZAXACATOaAR+aAYUBAgExmQFdmQFtAgE0mgFvmgGCAQIBMg==</sads:DebugSymbol.Symbol>
+  </Sequence>
+  <sap2010:WorkflowViewState.ViewStateManager>
+    <sap2010:ViewStateManager>
+      <sap2010:ViewStateData Id="Assign_1" sap:VirtualizedContainerService.HintSize="1038,62" />
+      <sap2010:ViewStateData Id="PromptAtMaker_1" sap:VirtualizedContainerService.HintSize="1016,22" />
+      <sap2010:ViewStateData Id="ApproveAtChecker_1" sap:VirtualizedContainerService.HintSize="1016,22" />
+      <sap2010:ViewStateData Id="ApproveAtMakerCentral_1" sap:VirtualizedContainerService.HintSize="758,22" />
+      <sap2010:ViewStateData Id="ApproveAtCheckerCentral_1" sap:VirtualizedContainerService.HintSize="611,22" />
+      <sap2010:ViewStateData Id="ApproveAtSecondLevelQC_1" sap:VirtualizedContainerService.HintSize="464,22" />
+      <sap2010:ViewStateData Id="WriteLine_1" sap:VirtualizedContainerService.HintSize="211,62" />
+      <sap2010:ViewStateData Id="TerminateWorkflow_1" sap:VirtualizedContainerService.HintSize="211,22" />
+      <sap2010:ViewStateData Id="Sequence_6" sap:VirtualizedContainerService.HintSize="233,248">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="If_4" sap:VirtualizedContainerService.HintSize="464,400" />
+      <sap2010:ViewStateData Id="Sequence_5" sap:VirtualizedContainerService.HintSize="486,586">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="If_3" sap:VirtualizedContainerService.HintSize="611,738" />
+      <sap2010:ViewStateData Id="Sequence_4" sap:VirtualizedContainerService.HintSize="633,924">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="If_1" sap:VirtualizedContainerService.HintSize="758,1076" />
+      <sap2010:ViewStateData Id="Sequence_3" sap:VirtualizedContainerService.HintSize="780,1262">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="WriteLine_2" sap:VirtualizedContainerService.HintSize="211,62" />
+      <sap2010:ViewStateData Id="If_2" sap:VirtualizedContainerService.HintSize="1016,1414" />
+      <sap2010:ViewStateData Id="Sequence_2" sap:VirtualizedContainerService.HintSize="1038,1662">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Sequence_1" sap:VirtualizedContainerService.HintSize="1060,1888">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="ComplaintManagementSystem_Workflow.Workflow_1" sap:VirtualizedContainerService.HintSize="1100,1968" />
+    </sap2010:ViewStateManager>
+  </sap2010:WorkflowViewState.ViewStateManager>
+</Activity>
